@@ -74,3 +74,9 @@
                            (apply str (rest type-name)))]
         (.setObject stmt idx (.createArrayOf conn elem-type (to-array v)))
         (.setObject stmt idx (clj->jsonb-pgobj v))))))
+
+(comment
+  (create-rating! {:id "b"
+                   :name "Tim"
+                   :rating 1
+                   :comment "Immer noch schön hier in Mainz"}))

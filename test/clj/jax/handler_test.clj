@@ -5,7 +5,9 @@
     [jax.handler :refer :all]
     [jax.middleware.formats :as formats]
     [muuntaja.core :as m]
-    [mount.core :as mount]))
+    [mount.core :as mount]
+    [hiccup.core :as hiccup]
+    [jax.routes.home :as home]))
 
 (defn parse-json [body]
   (m/decode formats/instance "application/json" body))
@@ -17,7 +19,15 @@
                  #'jax.handler/app-routes)
     (f)))
 
+(deftest test-input-form
+  (let [result (home/form-field "Name" "name")
+        html (hiccup/html result)]
+    (is (= [:div [:label "Name"]
+            [:input {:name "name"}]] result))
+    (is (= "<div><label>Name</label><input name="name" /></div>" html))))
+
 (deftest test-app
+
   (testing "main route"
     (let [response ((app) (request :get "/"))]
       (is (= 200 (:status response)))))
